@@ -33,6 +33,7 @@ const ItemScreen: React.FC<Props> = (props) => {
             payload: data
         })
         props.navigation.navigate(goBack)
+        // props.navigation.goBack()
     }
     
     const [item, setItem] = useState({

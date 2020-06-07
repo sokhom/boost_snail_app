@@ -121,16 +121,16 @@ const navigationOptionsa = (navData: any,props: Props1) => {
               onPress={()=>{navData.navigation.toggleDrawer()}}
             />
         </HeaderButtons>
-      ),
-      headerRight: (
-        <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item 
-                title='More'
-                iconName='ios-more'                    
-                onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'ItemList'})}}
-            />               
-        </HeaderButtons>
       )
+    //   headerRight: (
+    //     <HeaderButtons HeaderButtonComponent={HeaderButton}>
+    //         <Item 
+    //             title='More'
+    //             iconName='ios-more'                    
+    //             onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'ItemList'})}}
+    //         />               
+    //     </HeaderButtons>
+    //   )
     }    
 }
 

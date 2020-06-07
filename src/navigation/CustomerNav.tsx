@@ -72,7 +72,7 @@ const navigationOptionsa = (navData: any,props: Props1) => {
                 <Item 
                     title='More'
                     iconName='ios-more'                    
-                    onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'Customer'})}}
+                    onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'CustomerNav'})}}
                 />
                
             </HeaderButtons>
