@@ -30,8 +30,7 @@ interface Props extends NavProps {
 
 
 
-const ItemCate: React.FC<Props> = (props) => {
-  
+const ItemCate: React.FC<Props> = (props) => {  
   return (
     <View>
       <Items {...props}>   
@@ -44,7 +43,12 @@ const ItemCate: React.FC<Props> = (props) => {
 const myModal: React.FC<Props> = (props) =>{
   const [modalVisible, SetModalVisible] = useState(true)
   const goBack= () =>{
-    props.navigation.goBack()
+    //  let goURL = props.navigation.getParam('goBack') || null
+    //  if (goURL){
+    //     props.navigation.navigate(goURL)
+    //  }else{
+       props.navigation.goBack()
+    //  }
   }
   return (
     <View  
@@ -61,7 +65,7 @@ const myModal: React.FC<Props> = (props) =>{
           name='times'
           type='font-awesome'
           color='#5f6368'          
-          onPress={() => props.navigation.goBack()} 
+          onPress={goBack} 
         />
       }
         centerComponent={{ text: 'Creat New Item', style: { color: '#fff' } }}
