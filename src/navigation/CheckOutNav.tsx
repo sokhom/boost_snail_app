@@ -72,7 +72,7 @@ const navigationOptionsa = (navData: any,props: Props1) => {
                 <Item 
                     title='More'
                     iconName='ios-more'                    
-                    onPress={()=> {navData.navigation.navigate('MyModal')}}
+                    onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'Checkout'})}}
                 />
                
             </HeaderButtons>
@@ -94,10 +94,10 @@ const props = {
 }
 const CheckOutNav1 = createStackNavigator(config({...props}))
 const ModalScreen = createStackNavigator({
-  Checkout: {
+  CheckoutNav: {
     screen: CheckOutNav1
   },
-  MyModal: {
+  MyModalCheckOut: {
     screen: myModal
   }
 }, {

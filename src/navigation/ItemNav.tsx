@@ -24,7 +24,7 @@ interface Props1 {
   actionMenu?: () => void
 } 
 interface Props extends NavProps { 
-  actionMenu?: () => void
+  // goBack: () => void
 } 
 
 
@@ -43,6 +43,9 @@ const ItemCate: React.FC<Props> = (props) => {
 
 const myModal: React.FC<Props> = (props) =>{
   const [modalVisible, SetModalVisible] = useState(true)
+  const goBack= () =>{
+    props.navigation.goBack()
+  }
   return (
     <View  
       style={{width:'100%', height:'100%',
@@ -62,15 +65,24 @@ const myModal: React.FC<Props> = (props) =>{
         />
       }
         centerComponent={{ text: 'Creat New Item', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'home', color: '#fff' }}
+        // rightComponent={{ icon: 'home', color: '#fff' }}
       />
        <ItemScreen {...props}/>
     </View>
   )
 }
 
-
-const selectionModal: React.FC<Props> = (props) =>{
+interface SelectOrProps extends NavProps {
+  getItemSelection: () => {}
+}
+const goBackFromSelector = (props: SelectOrProps) =>{
+  // const item = props.getItemSelection();
+  const categor = props.navigation.getParam('selectionItem') || {id:0, name: 'None'}    
+  console.log('goBackFromSelector categor',categor)
+  props.navigation.setParams({selectionItem: categor})
+  props.navigation.goBack()
+}
+const selectionModal: React.FC<SelectOrProps> = (props) => {
   const [modalVisible, SetModalVisible] = useState(true)
   return (
     <View  
@@ -82,44 +94,43 @@ const selectionModal: React.FC<Props> = (props) =>{
       <Header
         leftComponent={ 
           <Icon
-          reverse = {false}
-          size = {24}
-          name='angle-left'
-          type='font-awesome'
-          color='#5f6368'
-          onPress={() => props.navigation.goBack()} 
-        />
-      }
+            reverse = {false}
+            size = {24}
+            name='angle-left'
+            type='font-awesome'
+            color='#5f6368'
+            onPress={() => goBackFromSelector(props)} 
+          />
+        }
         centerComponent={{ text: 'Categories', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'home', color: '#fff' }}
+        // rightComponent={{ icon: 'home', color: '#fff' }}
       />
-       <ItemSelector {...props}/>
+      <ItemSelector {...props}/>
     </View>
   )
 }
 const navigationOptionsa = (navData: any,props: Props1) => {
     // console.log(navData)
     return {
-        headerTitle: 'Items',
-        headerLeft: (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                <Item 
-                    title='Menu'
-                    iconName='ios-menu'
-                    onPress={()=>{navData.navigation.toggleDrawer()}}
-                />
-            </HeaderButtons>
-        ),
-        headerRight: (
-            <HeaderButtons HeaderButtonComponent={HeaderButton}>
-                <Item 
-                    title='More'
-                    iconName='ios-more'                    
-                    onPress={()=> {navData.navigation.navigate('MyModal')}}
-                />
-               
-            </HeaderButtons>
-        )
+      headerTitle: 'Items',
+      headerLeft: (
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item 
+              title='Menu'
+              iconName='ios-menu'
+              onPress={()=>{navData.navigation.toggleDrawer()}}
+            />
+        </HeaderButtons>
+      ),
+      headerRight: (
+        <HeaderButtons HeaderButtonComponent={HeaderButton}>
+            <Item 
+                title='More'
+                iconName='ios-more'                    
+                onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'ItemList'})}}
+            />               
+        </HeaderButtons>
+      )
     }    
 }
 
@@ -132,8 +143,8 @@ const itemListNavOption = (navData: any,props: Props1) => {
               <Item 
                   title='More'
                   iconName='ios-add'                    
-                  onPress={()=> {navData.navigation.navigate('MyModal')}}
-              />
+                  onPress={ ()=> {navData.navigation.navigate('MyModal',{goBack:'ItemList'})} }
+              /> 
           </HeaderButtons>
       )
   }    
@@ -158,7 +169,7 @@ const props = {
 const CheckOutNav1 = createStackNavigator(config({...props}))
 
 const ItemNav = createStackNavigator({
-  Checkout: {
+  ItemNav: {
     screen: CheckOutNav1
   },
   MyModal: {

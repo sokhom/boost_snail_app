@@ -26,7 +26,10 @@ import Item from '.'
 //     }
 //   ]
 
-interface Props extends NavProps {} 
+interface Props extends NavProps {
+    getItemSelection: ()=> {}
+} 
+
 interface State {}
 const ItemSelector: React.FC<Props> = (props) =>{   
 
@@ -54,29 +57,35 @@ const ItemSelector: React.FC<Props> = (props) =>{
         }
       ])
     
-    console.log('customer props:',props)     
-    console.log(props.navigation.getParam('categor'))
+    // console.log('customer props:',props)     
+    // console.log(props.navigation.getParam('categor'))
     const categor = props.navigation.getParam('categor') || {id:0, name: 'None'}
+    const itemSelectionHandler = props.navigation.getParam('itemSelectionHandler')
     
     const onItermPress=(item: any)=>{
-        console.log('onItermPress', item)
+        // console.log('onItermPress', item)
         // props.navigation.navigate('MyModal')      
         setList(
             list.map((d)=> {
                 return {...d, isCheck: (d.name === item.name || false)}
             })
-        ) 
-        // props.navigation.setParams({selectionItem: item})      
+        )
+        props.navigation.setParams({selectionItem: item})
+        itemSelectionHandler(item)
     }
 
     // useLayoutEffect(()=>{
     //     console.log('useLayoutEffect')
     // },[])
-    // useEffect( () => {
-    //     console.log('useEffect')
-    //     const selectionItem =  list.filter((item:any) =>  item.isCheck === true)
-    //     props.navigation.setParams({selectionItem: selectionItem})
-    // },[onItermPress])
+    useEffect( () => {
+        console.log(' selectionItem useEffect')
+        setList(
+            list.map((d)=> {
+                return {...d, isCheck: (d.name === categor.name || false)}
+            })
+        ) 
+        // props.navigation.setParams({selectionItem: selectionItem})
+    },[categor])
 
     const renderItem = (itemData: any) =>{ 
         const isCheck = itemData.item.name === categor.name || false
@@ -122,7 +131,7 @@ const ItemSelector: React.FC<Props> = (props) =>{
                 data = {list}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={(itemData) => {
-                    console.log('itemdata',itemData)
+                    // console.log('itemdata',itemData)
                     return renderItem(itemData)
                 }}
                 style={{ width: '100%' }}

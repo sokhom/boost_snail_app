@@ -38,7 +38,7 @@ const checkOut: React.FC<Props> = (props) => {
 }
 
 const myModal: React.FC<Props> = (props) =>{
-  const [modalVisible, SetModalVisible] = useState(true)
+  // const [modalVisible, SetModalVisible] = useState(true)
   return (
     <View  
       style={{width:'20%', height:'40%',
@@ -72,7 +72,7 @@ const navigationOptionsa = (navData: any,props: Props1) => {
                 <Item 
                     title='More'
                     iconName='ios-more'                    
-                    onPress={()=> {navData.navigation.navigate('MyModal')}}
+                    onPress={()=> {navData.navigation.navigate('MyModal',{goBack:'Customer'})}}
                 />
                
             </HeaderButtons>
@@ -81,7 +81,7 @@ const navigationOptionsa = (navData: any,props: Props1) => {
 }
 const config = (props: Props1) => {
   return {
-    Checkout: {
+    Customer: {
       screen: checkOut,
       navigationOptions: (navData: any) =>  navigationOptionsa(navData,{...props})
     }
@@ -94,10 +94,10 @@ const props = {
 }
 const CheckOutNav1 = createStackNavigator(config({...props}))
 const CustomerNav = createStackNavigator({
-  Checkout: {
+  CustomerNav: {
     screen: CheckOutNav1
   },
-  MyModal: {
+  MyModalCust: {
     screen: myModal
   }
 }, {

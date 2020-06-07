@@ -54,7 +54,7 @@ class Customer extends Component<Props, State> {
                     data = {list}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem = {(itemData) => {
-                        console.log('itemdata',itemData)
+                        // console.log('itemdata',itemData)
                         return renderItem(itemData)
                     }}
                     style={{ width: '100%' }}

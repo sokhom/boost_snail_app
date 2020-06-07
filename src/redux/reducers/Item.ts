@@ -1,4 +1,5 @@
-import {FETCH_ITEMS, ADD_NEW_ITEM} from '../actions/CustomerActs'
+import * as actions from '../actions/CustomerActs'
+import Item from '../../screen/item'
 
 interface Action {
     type: string,
@@ -9,68 +10,56 @@ export interface Item {
   id: number,
   name: String,
   avatar_url: String,
-  subtitle: String
+  subtitle: String,
+  category: {
+    id: number,
+    name: String
+  }
 }
 
 interface ItemState {
     data: Item[],
+    filter: Item[],
     loading: boolean
 }
 
-const intialState: ItemState = {
-    data: [{
-        id: 1,
-        name: 'All Items',
-        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-        subtitle: ''
-      },
-      {
-        id: 2,
-        name: 'Chris Jackson',
-        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        id: 2,
-        name: 'Chris Jackson',
-        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        id: 2,
-        name: 'Chris Jackson',
-        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman'
-      },
-      {
-        id: 2,
-        name: 'Chris Jackson',
-        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-        subtitle: 'Vice Chairman'
-      }],
+const intialState: ItemState = {    
+    data: [],
+    filter: [],
     loading: false
 }
 
 const reducer = (state:ItemState = intialState, action: Action): ItemState => {
     // console.log('item reducer', state)
     switch(action.type){
-        case FETCH_ITEMS:
+        case actions.FETCH_ITEMS:         
             return {
                 ...state,
-                data: state.data
+                filter: state.data.filter((item: any) => item.name === '')
             }
-        case ADD_NEW_ITEM: {
-            const {name='', description=''}= action.payload            
+        case actions.ADD_NEW_ITEM: {
+            const {name='', description='', category = {id:0, name:''}}= action.payload            
             const data = {
                 id: 0,
                 name: name,
                 avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-                subtitle: description
+                subtitle: description,
+                category: category
               }            
             return {
                 ...state,
                 data: [...state.data, data]
             }
+        }
+        case actions.SEARCH_ITEM: {
+          const {search=''}= action.payload
+          const filter = state.data.filter((item: any) => {
+            return item.name === search || search === ''
+           })
+          return {
+            ...state,
+            filter: [...filter]
+          }    
         }
             
         default:
