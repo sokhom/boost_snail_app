@@ -1,13 +1,16 @@
 import React ,{useState} from 'react'
 import { View, StyleSheet ,Modal, Button,} from 'react-native'
-import { Text, Icon, Header} from 'react-native-elements'
+// import { Text, Icon, Header} from 'react-native-elements'
 import { HeaderButtons, Item } from 'react-navigation-header-buttons'
 import { NavigationScreenProp, NavigationState, NavigationParams } from 'react-navigation'
-import { Header as HeaderItem} from 'react-native/Libraries/NewAppScreen'
+// import { Header as HeaderItem} from 'react-native/Libraries/NewAppScreen'
 import HeaderButton from '../components/HeaderButton'
 import Items  from '../screen/item'
 import {NavProps} from '../utils/NavProps'
 import ItemList from '../screen/item/ItemList'
+import CategoryList from '../screen/item/CategoryList'
+import  ModalStack,{ModalStackProps} from '../components/ModalStack'
+import CategoryScreen from '../screen/item/CategoryScreen'
 
 import {
   createStackNavigator,
@@ -27,93 +30,43 @@ interface Props extends NavProps {
   // goBack: () => void
 } 
 
-
-
-
-const ItemCate: React.FC<Props> = (props) => {  
+const ItemCate: React.FC<Props> = (props) => {
   return (
     <View>
-      <Items {...props}>   
-       
+      <Items {...props}>       
       </Items>      
     </View>
   )
 }
 
-const myModal: React.FC<Props> = (props) =>{
-  const [modalVisible, SetModalVisible] = useState(true)
-  const goBack= () =>{
-    //  let goURL = props.navigation.getParam('goBack') || null
-    //  if (goURL){
-    //     props.navigation.navigate(goURL)
-    //  }else{
-       props.navigation.goBack()
-    //  }
-  }
+const myModal: React.FC<ModalStackProps> = (props) => {  
   return (
-    <View  
-      style={{width:'100%', height:'100%',
-        backgroundColor:'none',
-        margin: 0
-      }}
-    >     
-      <Header
-        leftComponent={ 
-          <Icon
-         reverse = {false}
-          size = {24}
-          name='times'
-          type='font-awesome'
-          color='#5f6368'          
-          onPress={goBack} 
-        />
-      }
-        centerComponent={{ text: 'Creat New Item', style: { color: '#fff' } }}
-        // rightComponent={{ icon: 'home', color: '#fff' }}
-      />
-       <ItemScreen {...props}/>
-    </View>
+    <ModalStack {...props} header='Create New Item'>          
+      <ItemScreen {...props}/>
+    </ModalStack>
   )
 }
 
-interface SelectOrProps extends NavProps {
+interface SelectOrProps extends ModalStackProps {
   getItemSelection: () => {}
 }
-const goBackFromSelector = (props: SelectOrProps) =>{
-  // const item = props.getItemSelection();
-  const categor = props.navigation.getParam('selectionItem') || {id:0, name: 'None'}    
-  console.log('goBackFromSelector categor',categor)
-  props.navigation.setParams({selectionItem: categor})
-  props.navigation.goBack()
-}
-const selectionModal: React.FC<SelectOrProps> = (props) => {
-  const [modalVisible, SetModalVisible] = useState(true)
+const selectionModal: React.FC<SelectOrProps> = (props) => {  
   return (
-    <View  
-      style={{width:'100%', height:'100%',
-        backgroundColor:'none',
-        margin: 0
-      }}
-    >     
-      <Header
-        leftComponent={ 
-          <Icon
-            reverse = {false}
-            size = {24}
-            name='angle-left'
-            type='font-awesome'
-            color='#5f6368'
-            onPress={() => goBackFromSelector(props)} 
-          />
-        }
-        centerComponent={{ text: 'Categories', style: { color: '#fff' } }}
-        // rightComponent={{ icon: 'home', color: '#fff' }}
-      />
-      <ItemSelector {...props}/>
-    </View>
+    <ModalStack {...props} header='Categories' leftIcon='angle-left'>          
+       <ItemSelector {...props}/>
+    </ModalStack>    
   )
 }
-const navigationOptionsa = (navData: any,props: Props1) => {
+
+const categoryModal: React.FC<ModalStackProps> = (props) => {  
+  return (
+    <ModalStack {...props} header='Create New Category'>          
+      <CategoryScreen {...props}/>
+    </ModalStack>
+  )
+}
+
+const allItemsNavOpt = (navData: any) => {
     // console.log(navData)
     return {
       headerTitle: 'Items',
@@ -138,7 +91,7 @@ const navigationOptionsa = (navData: any,props: Props1) => {
     }    
 }
 
-const itemListNavOption = (navData: any,props: Props1) => {
+const itemListNavOption = (navData: any) => {
   
   return {
       headerTitle: 'Item List',    
@@ -153,34 +106,54 @@ const itemListNavOption = (navData: any,props: Props1) => {
       )
   }    
 }
-const config = (props: Props1) => {
+
+const categoriesNavOption = (navData: any) => {
+  
+  return {
+      headerTitle: 'Categories',    
+      headerRight: (
+          <HeaderButtons HeaderButtonComponent={HeaderButton}>
+              <Item 
+                  title='More'
+                  iconName='ios-add'                    
+                  onPress={ ()=> {navData.navigation.navigate('CategoryModal',{goBack:'Categories'})} }
+              /> 
+          </HeaderButtons>
+      )
+  }    
+}
+
+const config = () => {
   return {
     Items: {
       screen: ItemCate,
-      navigationOptions: (navData: any) =>  navigationOptionsa(navData,{...props})
+      navigationOptions: (navData: any) =>  allItemsNavOpt(navData)
     },
     ItemList:{
       screen: ItemList,
-      navigationOptions:(navData: any) => itemListNavOption(navData,{...props})
+      navigationOptions:(navData: any) => itemListNavOption(navData)
+    },
+    Categories:{
+      screen: CategoryList,
+      navigationOptions:(navData: any) => categoriesNavOption(navData)
     }
  }
 }
-const props = {  
-  actionMenu: () => {
-    console.log('Helllo')
-  }
-}
-const CheckOutNav1 = createStackNavigator(config({...props}))
+
+const ItemStack = createStackNavigator(config())
 
 const ItemNav = createStackNavigator({
   ItemNav: {
-    screen: CheckOutNav1
+    screen: ItemStack
   },
   MyModal: {
     screen: myModal
   },
   SelectionModal: {
     screen: selectionModal
+  },
+  CategoryModal: {
+    screen: categoryModal
   }
 }, {
   mode: 'modal',

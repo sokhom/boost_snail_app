@@ -13,7 +13,7 @@ const list = [
     },
     {
       id: 2,
-      name: 'Categery',
+      name: 'Category',
       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
       subtitle: 'Vice Chairman'
     },
@@ -35,8 +35,21 @@ interface Props extends NavProps {}
 interface State {}
 
 const onItermPress=(props:Props,item: any)=>{
-    console.log('onItermPress', props)
-    props.navigation.navigate('ItemList')
+    console.log('onItermPress', item.name)
+    let goTo = ''
+    switch(item.name){
+      case 'Category':{
+        props.navigation.navigate('Categories') 
+        return 
+      }
+        
+      case 'All Items': { 
+        props.navigation.navigate('ItemList') 
+        return
+      }
+      default: return
+    }   
+    // props.navigation.navigate(goTo)
 }
 const Item: React.FC<Props> = (props) => {   
         // console.log('customer props:',this.props)
@@ -48,7 +61,7 @@ const Item: React.FC<Props> = (props) => {
           title={itemData.item.name}
           subtitle={itemData.item.subtitle}
           // topDivider = {false}
-          onPress = {()=>onItermPress(props,itemData)}
+          onPress = {()=>onItermPress(props,itemData.item)}
           bottomDivider
           chevron
       />            

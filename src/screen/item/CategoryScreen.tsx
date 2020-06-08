@@ -11,7 +11,7 @@ interface Props extends NavProps {
     // goBack: () => void
 } 
 
-const ItemScreen: React.FC<Props> = (props) => {
+const CategoryScreen: React.FC<Props> = (props) => {
     const { control, handleSubmit, errors,setValue  } = useForm();
     const dispatch = useDispatch();
    
@@ -60,7 +60,7 @@ const ItemScreen: React.FC<Props> = (props) => {
     return (
         <View style={{height:'100%'}}>
             <Controller
-                as={<Input label='Item name' autoCapitalize="none" errorMessage= {errors.firstName && 'This is required'}/>}
+                as={<Input label='Name' autoCapitalize="none" errorMessage= {errors.firstName && 'This is required'}/>}
                 control={control}
                 name="name"
                 onChange={args => args[0].nativeEvent.text}
@@ -76,7 +76,7 @@ const ItemScreen: React.FC<Props> = (props) => {
             />
             <Controller
                 as={
-                    <Input value={item.category.name} label="Category" autoCapitalize="none" 
+                    <Input value={item.category.name} label="Item" autoCapitalize="none"
                         onFocus = {() => props.navigation.navigate('SelectionModal',{categor:item.category
                         ,itemSelectionHandler: itemSelection})}
                     />
@@ -97,4 +97,4 @@ const ItemScreen: React.FC<Props> = (props) => {
     )
 }
 
-export default ItemScreen
+export default CategoryScreen

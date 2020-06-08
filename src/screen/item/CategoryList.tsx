@@ -10,10 +10,10 @@ interface Props extends NavProps {}
 
 const onItermPress=(props:Props,item: any)=>{
     //console.log('onItermPress', props)
-    props.navigation.navigate('MyModal', {goBack: 'ItemList'})
+    props.navigation.navigate('CategoryModal', {goBack: 'Categories'})
 }
 
-const ItemList: React.FC<Props> = (props) => {    
+const CategoryList: React.FC<Props> = (props) => {    
   const list1 = useSelector((state: any) => { return state.item.filter}) 
   const dispatch = useDispatch();
   useEffect(()=>{
@@ -86,4 +86,4 @@ const styles = StyleSheet.create({
     color: 'grey'
   }
 })
-export default ItemList
+export default CategoryList
