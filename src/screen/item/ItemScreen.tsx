@@ -4,7 +4,7 @@ import {View, Alert } from 'react-native'
 import {Text, Input, Button } from 'react-native-elements'
 import {NavProps} from '../../utils/NavProps'
 import { useForm, Controller  } from "react-hook-form";
-import * as action from '../../redux/actions/CustomerActs'
+import * as action from '../../redux/actions/Item.act'
 
 
 interface Props extends NavProps {

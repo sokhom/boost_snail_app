@@ -1,72 +1,41 @@
 import React, {Component, useState, useEffect, useLayoutEffect} from 'react'
 import { View, StyleSheet, FlatList  } from 'react-native'
 import { Text, ListItem, SearchBar, Image, CheckBox  } from 'react-native-elements'
-import {CustomerModel} from '../../models/CustomerModel'
+import { connect, useDispatch, useSelector } from 'react-redux';
 import {NavProps} from '../../utils/NavProps'
-import Item from '.'
-
-// const list = [
-//     {
-//       id: 1,
-//       name: 'Food',
-//       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-//       subtitle: ''
-//     },
-//     {
-//       id: 2,
-//       name: 'Drink',
-//       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-//       subtitle: 'Vice Chairman'
-//     },
-//     {
-//       id: 2,
-//       name: 'UseFull',
-//       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-//       subtitle: 'Vice Chairman'
-//     }
-//   ]
-
+import * as action from '../../redux/actions/Item.act'
+import {Category} from '../../models/Item.d'
 interface Props extends NavProps {
     getItemSelection: ()=> {}
 } 
 
 interface State {}
-const ItemSelector: React.FC<Props> = (props) =>{   
-
-    const [list,setList] = useState([
-        {
-          id: 1,
-          name: 'Food',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-          subtitle: '',
-          isCheck: false
-        },
-        {
-          id: 2,
-          name: 'Drink',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-          subtitle: 'Vice Chairman',
-          isCheck: false
-        },
-        {
-          id: 2,
-          name: 'UseFull',
-          avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-          subtitle: 'Vice Chairman',
-          isCheck: false
-        }
-      ])
-    
-    // console.log('customer props:',props)     
-    // console.log(props.navigation.getParam('categor'))
+const ItemSelector: React.FC<Props> = (props) =>{ 
+    const [select,setSelect] = useState<Category[]>([])
+    const dispatch = useDispatch()
+    let list =  useSelector((state: any) => { return state.category.selection}) 
     const categor = props.navigation.getParam('categor') || {id:0, name: 'None'}
     const itemSelectionHandler = props.navigation.getParam('itemSelectionHandler')
     
+    useEffect(() => {
+        dispatch({
+            type: action.CATEGORY_SELECTION           
+        }) 
+    },[])
+
+    useEffect( () => {
+        // setSelect(list)
+        setSelect(list.map((d)=> {
+            console.log(' selectionItem useEffect',d)       
+            return {...d, isCheck: (d.name === categor.name || false)}
+        }))    
+      
+    },[list])
+
     const onItermPress=(item: any)=>{
-        // console.log('onItermPress', item)
-        // props.navigation.navigate('MyModal')      
-        setList(
-            list.map((d)=> {
+       
+        setSelect(
+            select.map((d)=> {
                 return {...d, isCheck: (d.name === item.name || false)}
             })
         )
@@ -74,18 +43,6 @@ const ItemSelector: React.FC<Props> = (props) =>{
         itemSelectionHandler(item)
     }
 
-    // useLayoutEffect(()=>{
-    //     console.log('useLayoutEffect')
-    // },[])
-    useEffect( () => {
-        console.log(' selectionItem useEffect')
-        setList(
-            list.map((d)=> {
-                return {...d, isCheck: (d.name === categor.name || false)}
-            })
-        ) 
-        // props.navigation.setParams({selectionItem: selectionItem})
-    },[categor])
 
     const renderItem = (itemData: any) =>{ 
         const isCheck = itemData.item.name === categor.name || false
@@ -128,7 +85,7 @@ const ItemSelector: React.FC<Props> = (props) =>{
                 platform ={'ios'}
             />                
             <FlatList
-                data = {list}
+                data = {select}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={(itemData) => {
                     // console.log('itemdata',itemData)

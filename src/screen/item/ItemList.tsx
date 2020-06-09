@@ -2,9 +2,9 @@ import React, {Component, useEffect, useState} from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, FlatList, ScrollView  } from 'react-native'
 import { Text, ListItem, SearchBar, Image, CheckBox  } from 'react-native-elements'
-import {CustomerModel} from '../../models/CustomerModel'
+// import {CustomerModel} from '../../models/Item'
 import {NavProps} from '../../utils/NavProps'
-import * as actions from '../../redux/actions/CustomerActs'
+import * as actions from '../../redux/actions/Item.act'
 
 interface Props extends NavProps {}
 
@@ -23,12 +23,13 @@ const ItemList: React.FC<Props> = (props) => {
   },[])
 
   const renderItem = (itemData: any) =>{ 
-    // console.log('customer state:',itemData)       
+      // console.log('customer state:',itemData)  
+      const {category={id:0, name:''}} = itemData.item
       return(           
           <ListItem
-              key={itemData.in}
+              key={itemData.index}
               leftAvatar={{ source: { uri: itemData.item.avatar_url } }}
-              title={itemData.item.name +' - '+ itemData.item.category.name}                  
+              title={itemData.item.name +' - '+ category.name}                  
               subtitle={itemData.item.subtitle}
               topDivider = {false}
               onPress = {()=>onItermPress(props,itemData)}

@@ -5,10 +5,12 @@ import storage from 'redux-persist/lib/storage'
 import { processColor } from 'react-native'
 import customer from './reducers/Customer'
 import item from './reducers/Item'
+import category from './reducers/Category'
 
 const reducer = combineReducers({
     customer: customer,
-    item: item
+    item: item,
+    category: category
 })
 
 const persistConfig = {

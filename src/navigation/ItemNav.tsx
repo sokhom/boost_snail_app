@@ -52,7 +52,7 @@ interface SelectOrProps extends ModalStackProps {
 }
 const selectionModal: React.FC<SelectOrProps> = (props) => {  
   return (
-    <ModalStack {...props} header='Categories' leftIcon='angle-left'>          
+    <ModalStack {...props} header='Select Category' leftIcon='angle-left'>          
        <ItemSelector {...props}/>
     </ModalStack>    
   )
@@ -158,6 +158,7 @@ const ItemNav = createStackNavigator({
 }, {
   mode: 'modal',
   headerMode: 'none',
+  cardOverlayEnabled: false
 })
 
 export default ItemNav

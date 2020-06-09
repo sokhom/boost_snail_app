@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, ListItem } from 'react-native-elements'
-import {CustomerModel} from '../../models/CustomerModel'
 import {NavProps} from '../../utils/NavProps'
 
 const list = [
@@ -13,7 +12,7 @@ const list = [
     },
     {
       id: 2,
-      name: 'Category',
+      name: 'Categories',
       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
       subtitle: 'Vice Chairman'
     },
@@ -35,23 +34,22 @@ interface Props extends NavProps {}
 interface State {}
 
 const onItermPress=(props:Props,item: any)=>{
-    console.log('onItermPress', item.name)
-    let goTo = ''
-    switch(item.name){
-      case 'Category':{
-        props.navigation.navigate('Categories') 
-        return 
-      }
-        
-      case 'All Items': { 
-        props.navigation.navigate('ItemList') 
-        return
-      }
-      default: return
-    }   
-    // props.navigation.navigate(goTo)
+  console.log('onItermPress', item.name)
+  let goTo = ''
+  switch(item.name){
+    case 'Categories':{
+      props.navigation.navigate('Categories') 
+      return 
+    }        
+    case 'All Items': { 
+      props.navigation.navigate('ItemList') 
+      return
+    }
+    default: return
+  }  
 }
-const Item: React.FC<Props> = (props) => {   
+
+const Items: React.FC<Props> = (props) => {   
         // console.log('customer props:',this.props)
   const renderItem = (itemData: any) =>{ 
     return(               
@@ -67,24 +65,18 @@ const Item: React.FC<Props> = (props) => {
       />            
     ) 
   }
-  // const actions = ['Add','Remove']
-  // const onPopupEvent = (eventName: string, index: number | undefined) => {
-  //   console.log('from custom popup menu')
-    
-  // }
-  return(
-   
-      <FlatList
-          data = {list}
-          // keyExtractor={(item, index) => index.toString()}
-          renderItem = {(itemData) => {
-              // console.log('itemdata',itemData)
-              return renderItem(itemData)
-          }}
-          style={{ width: '100%' }}
-      /> 
-   
+ 
+  return(   
+    <FlatList
+      data = {list}
+      // keyExtractor={(item, index) => index.toString()}
+      renderItem = {(itemData) => {
+          // console.log('itemdata',itemData)
+          return renderItem(itemData)
+      }}
+      style={{ width: '100%' }}
+    />    
   )
 }
 
-export default Item
+export default Items

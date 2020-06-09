@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { View, StyleSheet, FlatList } from 'react-native'
 import { Text, ListItem } from 'react-native-elements'
-import {CustomerModel} from '../../models/CustomerModel'
+// import {CustomerModel} from '../../models/Item'
 
 
 const list = [

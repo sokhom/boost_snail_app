@@ -2,9 +2,9 @@ import React, {Component, useEffect, useState} from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { View, StyleSheet, FlatList, ScrollView  } from 'react-native'
 import { Text, ListItem, SearchBar, Image, CheckBox  } from 'react-native-elements'
-import {CustomerModel} from '../../models/CustomerModel'
+// import {CustomerModel} from '../../models/Item'
 import {NavProps} from '../../utils/NavProps'
-import * as actions from '../../redux/actions/CustomerActs'
+import * as actions from '../../redux/actions/Item.act'
 
 interface Props extends NavProps {}
 
@@ -14,11 +14,11 @@ const onItermPress=(props:Props,item: any)=>{
 }
 
 const CategoryList: React.FC<Props> = (props) => {    
-  const list1 = useSelector((state: any) => { return state.item.filter}) 
+  const categories = useSelector((state: any) => { return state.category.filter}) 
   const dispatch = useDispatch();
   useEffect(()=>{
     dispatch({
-      type: actions.FETCH_ITEMS
+      type: actions.FETCH_CATEGORIES
     })
   },[])
 
@@ -41,7 +41,7 @@ const CategoryList: React.FC<Props> = (props) => {
   const updateSearch = (search: any) =>{
     setSearch(search)
     dispatch({
-      type: actions.SEARCH_ITEM,
+      type: actions.SEARCH_CATEGORY,
       payload: {search: search}
     })
     // console.log('from custom filter',filter)
@@ -49,15 +49,15 @@ const CategoryList: React.FC<Props> = (props) => {
   return(
       <View>
           <SearchBar
-              placeholder="Type Here..."
-              onChangeText={updateSearch}
-              value={search}
-              platform ={'ios'}
+            placeholder="Type Here..."
+            onChangeText={updateSearch}
+            value={search}
+            platform ={'ios'}
           /> 
           
           <FlatList
               scrollEnabled = {true}
-              data = {list1}
+              data = {categories}
               keyExtractor={(item, index) => index.toString()}
               renderItem = {(itemData) => {
                   // console.log('itemdata',itemData)
