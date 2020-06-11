@@ -11,6 +11,8 @@ import ItemList from '../screen/item/ItemList'
 import CategoryList from '../screen/item/CategoryList'
 import  ModalStack,{ModalStackProps} from '../components/ModalStack'
 import CategoryScreen from '../screen/item/CategoryScreen'
+import CategoryLabel from '../screen/item/CategeryLabel'
+import ItemAvatar from '../screen/item/ItemAvatar'
 
 import {
   createStackNavigator,
@@ -63,6 +65,21 @@ const categoryModal: React.FC<ModalStackProps> = (props) => {
     <ModalStack {...props} header='Create New Category'>          
       <CategoryScreen {...props}/>
     </ModalStack>
+  )
+}
+const selectCatLabelModal: React.FC<SelectOrProps> = (props) => {  
+  return (
+    <ModalStack {...props} header='Select Category Label' leftIcon='angle-left'>          
+       <CategoryLabel {...props}/>
+    </ModalStack>    
+  )
+}
+
+const itemAvatarModal: React.FC<SelectOrProps> = (props) => {  
+  return (
+    <ModalStack {...props} header='Select Item Avatar' leftIcon='angle-left'>          
+       <ItemAvatar {...props}/>
+    </ModalStack>    
   )
 }
 
@@ -152,8 +169,14 @@ const ItemNav = createStackNavigator({
   SelectionModal: {
     screen: selectionModal
   },
+  ItemAvatarModal: {
+    screen: itemAvatarModal
+  },
   CategoryModal: {
     screen: categoryModal
+  },
+  SelectCatLabelModal: {
+    screen: selectCatLabelModal
   }
 }, {
   mode: 'modal',

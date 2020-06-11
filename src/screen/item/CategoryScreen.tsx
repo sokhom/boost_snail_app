@@ -12,7 +12,7 @@ interface Props extends NavProps {
 } 
 
 const CategoryScreen: React.FC<Props> = (props) => {
-    const [visible1, setVisible] = useState(false);
+    const [color, setColor] = useState('gray');
 
     const { control, handleSubmit, errors, setValue } = useForm();
     const dispatch = useDispatch();   
@@ -44,43 +44,35 @@ const CategoryScreen: React.FC<Props> = (props) => {
         }
     })
     
-    // const itemSelection = (categor: any) => {        
-    //     setItem({
-    //         ...item,
-    //         category:{id: categor.id, name: categor.name}
-    //     })
-    //     setValue([{
-    //         'category': categor.name
-    //     }])
-    // }
+    const itemSelection = (color: any) => {        
+        // setItem({
+        //     ...item,
+        //     category:{id: categor.id, name: categor.name}
+        // })
+        // setValue([{
+        //     'category': categor.name
+        // }])
+        console.log(color)
+        setColor(color)
+    }
 
     
     const toggleOverlay = () => {
-        // setVisible(!visible1);
-        // Alert.alert(
-        // "Alert Title",
-        // "My Alert Msg",
-        // [
-        //     {
-        //     text: "Cancel",
-        //     onPress: () => console.log("Cancel Pressed"),
-        //     style: "cancel"
-        //     },
-        //     { text: "OK", onPress: () => console.log("OK Pressed") }
-        // ],
-        // { cancelable: false }
-        // );
+        props.navigation.navigate('SelectCatLabelModal',{categor:item.category
+            ,itemSelectionHandler: itemSelection})        
     };
    
     return (
         <View style={styles.container} >
-            <TouchableOpacity style={styles.categoryLabel} onPress={toggleOverlay} >
+            <TouchableOpacity style={[styles.categoryLabel,{backgroundColor: color }]} onPress={toggleOverlay} 
+                activeOpacity= {0.7}
+            >
             </TouchableOpacity>
             {/* <Overlay isVisible={visible1} onBackdropPress={toggleOverlay} >
                 <Text>Hello from Overlay!</Text>
             </Overlay>             */}
             <Controller
-                as={<Input placeholder ='Category name' autoCapitalize="none" errorMessage= {errors.firstName && 'This is required'}/>}
+                as={<Input placeholder ='Category name' autoCapitalize="none" errorMessage= {errors.name && 'This is required'}/>}
                 control={control}
                 name="name"
                 onChange={args => args[0].nativeEvent.text}
@@ -121,11 +113,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         height:'100%', 
-        alignItems: "center" 
+        alignItems: "center",
+        padding: 10
     },
     categoryLabel: {
-      width:'25%',
-      height:'10%', 
+        minWidth: 80,
+        minHeight: 80,
       backgroundColor: 'gray',
       justifyContent: "center",
       padding: 10,

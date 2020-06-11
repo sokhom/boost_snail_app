@@ -48,18 +48,20 @@ const ItemSelector: React.FC<Props> = (props) =>{
         const isCheck = itemData.item.name === categor.name || false
         return(    
             <ListItem
-                key={itemData.in}
+                key={itemData.index}
                 leftAvatar={{ source: { uri: itemData.item.avatar_url } }}
                 title={itemData.item.name}
                 // subtitle={itemData.item.subtitle}
-                rightTitle = {
-                    <CheckBox  
-                        checkedIcon='dot-circle-o'
-                        uncheckedIcon='circle-o' 
-                        checked={itemData.item.isCheck}
-                        onPress = {()=>onItermPress(itemData.item)}
-                    />
-                }
+                activeOpacity = {1}
+                checkBox = {{size: 18, checked: itemData.item.isCheck, center: true, onPress: ()=> { onItermPress(itemData.item)} }}
+                // checkBox = {()=>
+                //     <CheckBox  
+                //         checkedIcon='dot-circle-o'
+                //         uncheckedIcon='circle-o' 
+                //         checked={itemData.item.isCheck}
+                //         onPress = {()=>onItermPress(itemData.item)}
+                //     />
+                // }
                 subtitle={
                     <View style={styles.subtitleView}>                        
                     <Text style={styles.ratingText}>5 months ago</Text>
@@ -68,6 +70,7 @@ const ItemSelector: React.FC<Props> = (props) =>{
                 topDivider = {false}
                 onPress = {()=>onItermPress(itemData.item)}
                 bottomDivider
+                // checkmark = {itemData.item.isCheck}
             />                                  
         )
     }

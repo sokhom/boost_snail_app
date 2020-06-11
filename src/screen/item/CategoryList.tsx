@@ -33,11 +33,13 @@ const CategoryList: React.FC<Props> = (props) => {
               topDivider = {false}
               onPress = {()=>onItermPress(props,itemData)}
               bottomDivider
+              chevron
+              // checkmark = {true}
           />                                  
       ) 
   }  
  
-  const [search, setSearch] = useState('')  
+  const [search, setSearch] = useState('')
   const updateSearch = (search: any) =>{
     setSearch(search)
     dispatch({
@@ -53,6 +55,8 @@ const CategoryList: React.FC<Props> = (props) => {
             onChangeText={updateSearch}
             value={search}
             platform ={'ios'}
+           
+          
           /> 
           
           <FlatList
@@ -64,6 +68,7 @@ const CategoryList: React.FC<Props> = (props) => {
                   return renderItem(itemData)
               }}
               style={{ width: '100%' }}
+              // numColumns = {2}
           /> 
           
       </View>

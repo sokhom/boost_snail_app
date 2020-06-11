@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useCallback, } from 'react'
 import { connect, useDispatch, useSelector } from 'react-redux';
-import {View, Alert } from 'react-native'
+import {StyleSheet, View, Alert, TouchableOpacity } from 'react-native'
 import {Text, Input, Button } from 'react-native-elements'
 import {NavProps} from '../../utils/NavProps'
 import { useForm, Controller  } from "react-hook-form";
@@ -40,6 +40,7 @@ const ItemScreen: React.FC<Props> = (props) => {
     const [item, setItem] = useState({
         itemName: 'Pro',
         description: '',
+        color:'gray',
         category: {
             id: 1,
             name: 'Drink'
@@ -49,18 +50,28 @@ const ItemScreen: React.FC<Props> = (props) => {
     const itemSelection = (categor: any) => {
         // console.log('itemSelection handler', item)
         setItem({
-            ...item,
+            ...item,           
             category:{id: categor.id, name: categor.name}
         })
         setValue([{
             'category': categor.name
         }])
     }
+    
+    const toggleOverlay = () => {
+        props.navigation.navigate('ItemAvatarModal',{categor:item.category
+            ,itemSelectionHandler: itemSelection})        
+    };
+   
    
     return (
-        <View style={{height:'100%'}}>
+        <View style={styles.container} >
+             <TouchableOpacity style={[styles.categoryLabel,{backgroundColor: item.color }]} onPress={toggleOverlay} 
+                activeOpacity= {0.7}
+            >
+            </TouchableOpacity>
             <Controller
-                as={<Input label='Item name' autoCapitalize="none" errorMessage= {errors.firstName && 'This is required'}/>}
+                as={<Input placeholder ='Item name' autoCapitalize="none" errorMessage= {errors.firstName && 'This is required'}/>}
                 control={control}
                 name="name"
                 onChange={args => args[0].nativeEvent.text}
@@ -68,7 +79,7 @@ const ItemScreen: React.FC<Props> = (props) => {
                 defaultValue={item.itemName}
             />
             <Controller
-                as={<Input label="Description" autoCapitalize="none"/>}
+                as={<Input placeholder="Description" autoCapitalize="none"/>}
                 control={control}
                 name="description"
                 onChange={args => args[0].nativeEvent.text}
@@ -76,7 +87,7 @@ const ItemScreen: React.FC<Props> = (props) => {
             />
             <Controller
                 as={
-                    <Input value={item.category.name} label="Category" autoCapitalize="none" 
+                    <Input value={item.category.name} placeholder="Category" autoCapitalize="none" 
                         onFocus = {() => props.navigation.navigate('SelectionModal',{categor:item.category
                         ,itemSelectionHandler: itemSelection})}
                     />
@@ -96,5 +107,30 @@ const ItemScreen: React.FC<Props> = (props) => {
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        height:'100%', 
+        alignItems: "center",
+        padding: 10
+    },
+    categoryLabel: {
+        minWidth: 80,
+        minHeight: 80,
+      backgroundColor: 'gray',
+      justifyContent: "center",
+      padding: 10,
+      paddingHorizontal: 10
+    },
+    button: {
+      alignItems: "center",
+      backgroundColor: "#DDDDDD",
+    },
+    countContainer: {
+      alignItems: "center",
+      padding: 10
+    }
+  });
 
 export default ItemScreen
