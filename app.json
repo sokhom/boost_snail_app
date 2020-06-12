@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-typescript-app",
-    "slug": "rn-typescript-app",
+    "name": "Boost Snail App",
+    "slug": "boost-snail-app",
     "platforms": [
       "ios",
       "android",

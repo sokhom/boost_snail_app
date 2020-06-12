@@ -46,6 +46,7 @@ const ItemScreen: React.FC<Props> = (props) => {
             name: 'Drink'
         }
     })
+    // const [color, setColor] = useState('gray')
     
     const itemSelection = (categor: any) => {
         // console.log('itemSelection handler', item)
@@ -57,10 +58,17 @@ const ItemScreen: React.FC<Props> = (props) => {
             'category': categor.name
         }])
     }
+
+    const selectLabelColorHandler = (color: any) => {
+        setItem({
+            ...item,           
+            color: color
+        })
+    }
     
     const toggleOverlay = () => {
         props.navigation.navigate('ItemAvatarModal',{categor:item.category
-            ,itemSelectionHandler: itemSelection})        
+            ,selectLabelColorHandler: selectLabelColorHandler})        
     };
    
    

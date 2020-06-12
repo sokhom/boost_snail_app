@@ -5,7 +5,7 @@ import * as Permissions from 'expo-permissions';
 
 import Colors from '../constants/Colors';
 
-const ImgPicker = props => {
+const ImgPicker = (props: any) => {
   const [pickedImage, setPickedImage] = useState('');
 
   const verifyPermissions = async () => {
